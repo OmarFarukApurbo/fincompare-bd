@@ -1,0 +1,18 @@
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 1631.3ms
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/14) ...
+ΓÜá metadataBase property in metadata export is not set for resolving social open graph or twitter images, using "http://localhost:3000". See https://nextjs.org/docs/app/api-reference/functions/generate-metadata#metadatabase
+Error occurred prerendering page "/about". Read more: https://nextjs.org/docs/messages/prerender-error
+Error: Attempted to call useI18n() from the server but useI18n is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.
+    at <unknown> (C:\Users\omarf\.gemini\antigravity\scratch\fincompare-bd\.next\server\chunks\ssr\[root-of-the-server]__933ce522._.js:1:1296)
+    at s (C:\Users\omarf\.gemini\antigravity\scratch\fincompare-bd\.next\server\chunks\ssr\[root-of-the-server]__8301547c._.js:1:6728)
+    at stringify (<anonymous>) {
+  digest: '1914994996'
+}
+Export encountered an error on /about/page: /about, exiting the build.
+Γ¿» Next.js build worker exited with code: 1 and signal: null

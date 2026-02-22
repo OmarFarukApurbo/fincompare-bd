@@ -1,0 +1,125 @@
+{
+    "navbar": {
+        "credit_cards": "Credit Cards",
+        "loans": "Loans",
+        "dps_fdr": "DPS/FDR",
+        "islamic_finance": "Islamic Finance",
+        "tax_tools": "Tax Tools",
+        "sign_in": "Sign In"
+    },
+    "hero": {
+        "title_part1": "Make the",
+        "title_highlight": "Best",
+        "title_part2": "Financial Decisions",
+        "subtitle": "Compare credit cards, loans, and saving rates in Bangladesh. Transparent data, zero hidden fees.",
+        "search_prefix": "I want to compare",
+        "purpose_prefix": "for",
+        "income_prefix": "with monthly income",
+        "find_matches": "Find Best Matches"
+    },
+    "quick_actions": {
+        "credit_cards": "Best Credit Cards 2026",
+        "personal_loans": "Compare Personal Loans",
+        "dps_return": "Calculate DPS Return",
+        "mfs_charge": "MFS Charge Calculator",
+        "islamic_finance": "Islamic Finance",
+        "tax_rebate": "Tax Rebate Guide"
+    },
+    "common": {
+        "apply_now": "Apply Now",
+        "view_all": "View all",
+        "months": "Months",
+        "years": "Years"
+    },
+    "pages": {
+        "cards": {
+            "title": "Credit Cards",
+            "desc": "Compare 45+ credit cards in Bangladesh. Filter by rewards, cashback, and travel perks.",
+            "showing": "Showing 45 Credit Cards",
+            "sort_pop": "Sort by: Popularity",
+            "sort_fee": "Sort by: Annual Fee (Low to High)",
+            "sort_rating": "Sort by: Rating"
+        },
+        "loans": {
+            "title": "Loans",
+            "desc": "Compare personal, home, and auto loans. Calculate your EMI and apply for the best rates.",
+            "top_loans": "Top Personal Loans"
+        },
+        "deposits": {
+            "title": "DPS/FDR",
+            "desc": "Maximize your savings with the best Deposit Pension Scheme (DPS) and Fixed Deposit Receipt (FDR) rates.",
+            "top_rates": "Top DPS/FDR Rates"
+        },
+        "islamic": {
+            "title": "Islamic Finance",
+            "desc": "Compare Shariah-compliant credit cards, investments, and home financing options in Bangladesh.",
+            "top_cards": "Top Islamic Cards"
+        },
+        "blog": {
+            "title": "Financial Literacy Blog",
+            "desc": "Expert guides, tips, and insights to help you manage your money better in Bangladesh.",
+            "coming_soon": "Blog Articles Coming Soon",
+            "curating": "We are currently curating the best financial content for you."
+        },
+        "about": {
+            "title": "About FinCompare BD",
+            "desc": "Our mission is to bring radical transparency to the financial sector in Bangladesh."
+        },
+        "contact": {
+            "title": "Contact Us",
+            "desc": "Have questions about a financial product or our platform? We're here to help.",
+            "get_in_touch": "Get in Touch",
+            "send_message": "Send a Message",
+            "email_support": "Email Support",
+            "call_us": "Call Us",
+            "office_location": "Office Location",
+            "submit_msg": "Send Message"
+        }
+    },
+    "calculator": {
+        "emi_title": "Loan EMI Calculator",
+        "loan_amount": "Loan Amount",
+        "tenure_months": "Tenure (Months)",
+        "interest_rate": "Interest Rate (%)",
+        "monthly_emi": "Monthly EMI",
+        "total_interest": "Total Interest",
+        "total_payable": "Total Payable"
+    },
+    "lead_modal": {
+        "application_received": "Application Received!",
+        "contact_shortly": "Our team will contact you shortly regarding the ",
+        "express_interest": "Express Interest",
+        "leave_details": "Leave your details and a bank representative will guide you through the process for ",
+        "personal_details": "Personal Details",
+        "full_name": "Full Name",
+        "phone": "Phone Number",
+        "email": "Email Address",
+        "professional_info": "Professional Info",
+        "monthly_income": "Monthly Income (BDT)",
+        "company_name": "Company Name",
+        "designation": "Designation",
+        "tenure": "Tenure (Years)",
+        "submit": "Submit Details",
+        "agree": "By submitting, you agree to our Terms & Privacy Policy."
+    },
+    "footer": {
+        "desc": "Empowering consumers in Bangladesh with radical transparency to make the best financial decisions. Compare rates, tools, and read comprehensive guides.",
+        "products": "Products",
+        "personal_loans": "Personal Loans",
+        "home_loans": "Home Loans",
+        "resources": "Resources",
+        "blog": "Financial Blog",
+        "emi_calc": "EMI Calculator",
+        "return_calc": "Return Calculator",
+        "tax_guide": "Tax Guide",
+        "company": "Company",
+        "about_us": "About Us",
+        "contact": "Contact",
+        "careers": "Careers",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "rights": "All rights reserved.",
+        "unbiased": "100% Unbiased & Secure",
+        "disclaimer": "Disclaimer: FinCompare BD is a comparison platform and is not a financial institution, bank, or lender. The information provided on this website is for general informational purposes only and does not constitute financial advice. Interest rates, fees, and product details are subject to change by the respective financial institutions without notice. Please verify all information directly with the provider before applying."
+    }
+}
