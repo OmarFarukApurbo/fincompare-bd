@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from 'react';
-import { Filter, ChevronDown, CheckSquare, Square } from 'lucide-react';
+import { Filter, ChevronDown, CheckSquare } from 'lucide-react';
 
-export default function ProductFilterSidebar() {
+interface ProductFilterSidebarProps {
+    selectedFilters: Record<string, string[]>;
+    onFilterChange: (category: string, option: string) => void;
+    onClearFilters: () => void;
+}
+
+export default function ProductFilterSidebar({ selectedFilters, onFilterChange, onClearFilters }: ProductFilterSidebarProps) {
     const filters = [
         {
             category: "Card Network",
@@ -18,6 +23,10 @@ export default function ProductFilterSidebar() {
             options: ["No Annual Fee", "First Year Free", "Premium (৳ 5000+)"]
         }
     ];
+
+    const isChecked = (category: string, option: string) => {
+        return selectedFilters[category]?.includes(option) || false;
+    };
 
     return (
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-24">
@@ -36,9 +45,15 @@ export default function ProductFilterSidebar() {
                         <div className="space-y-2">
                             {filterBlock.options.map((option, oIdx) => (
                                 <label key={oIdx} className="flex items-center gap-3 cursor-pointer group">
-                                    <div className="w-5 h-5 rounded border border-slate-300 flex items-center justify-center group-hover:border-brand-blue transition-colors bg-slate-50">
-                                        {/* <CheckSquare className="w-4 h-4 text-brand-blue" /> */}
+                                    <div className="w-5 h-5 rounded border border-slate-300 flex items-center justify-center group-hover:border-brand-blue transition-colors bg-slate-50 relative">
+                                        {isChecked(filterBlock.category, option) && <CheckSquare className="w-4 h-4 text-brand-blue absolute inset-0 m-auto" />}
                                     </div>
+                                    <input
+                                        type="checkbox"
+                                        className="hidden"
+                                        checked={isChecked(filterBlock.category, option)}
+                                        onChange={() => onFilterChange(filterBlock.category, option)}
+                                    />
                                     <span className="text-slate-600 group-hover:text-brand-dark text-sm transition-colors">{option}</span>
                                 </label>
                             ))}
@@ -47,7 +62,10 @@ export default function ProductFilterSidebar() {
                 ))}
             </div>
 
-            <button className="w-full mt-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition-colors text-sm">
+            <button
+                onClick={onClearFilters}
+                className="w-full mt-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-lg transition-colors text-sm"
+            >
                 Clear All Filters
             </button>
         </div>

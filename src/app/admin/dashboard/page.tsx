@@ -7,22 +7,30 @@ import Image from 'next/image';
 
 type TabType = 'credit_cards' | 'loans' | 'deposits' | 'shariah_cards';
 
-const schemas: Record<TabType, { key: string, label: string, type: 'text' | 'number' | 'boolean' | 'textarea' }[]> = {
+const schemas: Record<TabType, { key: string, label: string, type: 'text' | 'number' | 'boolean' | 'textarea', section?: 'general' | 'comparison' }[]> = {
     credit_cards: [
-        { key: 'bank', label: 'Bank Name', type: 'text' },
-        { key: 'name', label: 'Product Name', type: 'text' },
-        { key: 'highlight', label: 'Highlight Badge Text', type: 'text' },
-        { key: 'rating', label: 'Rating (0-5)', type: 'number' },
-        { key: 'reviews', label: 'Number of Reviews', type: 'number' },
-        { key: 'annual_fee', label: 'Annual Fee', type: 'text' },
-        { key: 'fee_waived_condition', label: 'Fee Waived Condition', type: 'text' },
-        { key: 'interest_rate', label: 'Interest Rate', type: 'text' },
-        { key: 'color', label: 'Card Color Style (e.g., from-blue-600 to-indigo-800)', type: 'text' },
-        { key: 'badge_color', label: 'Badge Style (e.g., bg-blue-100 text-blue-700)', type: 'text' },
-        { key: 'is_popular', label: 'Is Popular Badge?', type: 'boolean' },
-        { key: 'features', label: 'Key Features (One per line)', type: 'textarea' },
-        { key: 'documents', label: 'Required Documents (One per line)', type: 'textarea' },
-        { key: 'eligibility', label: 'Eligibility Criteria (One per line)', type: 'textarea' },
+        { key: 'bank', label: 'Bank Name', type: 'text', section: 'general' },
+        { key: 'name', label: 'Product Name', type: 'text', section: 'general' },
+        { key: 'highlight', label: 'Highlight Badge Text', type: 'text', section: 'general' },
+        { key: 'rating', label: 'Rating (0-5)', type: 'number', section: 'general' },
+        { key: 'reviews', label: 'Number of Reviews', type: 'number', section: 'general' },
+        { key: 'annual_fee', label: 'Annual Fee', type: 'text', section: 'general' },
+        { key: 'fee_waived_condition', label: 'Fee Waived Condition', type: 'text', section: 'general' },
+        { key: 'interest_rate', label: 'Interest Rate', type: 'text', section: 'general' },
+        { key: 'color', label: 'Card Color Style (e.g., from-blue-600 to-indigo-800)', type: 'text', section: 'general' },
+        { key: 'badge_color', label: 'Badge Style (e.g., bg-blue-100 text-blue-700)', type: 'text', section: 'general' },
+        { key: 'is_popular', label: 'Is Popular Badge?', type: 'boolean', section: 'general' },
+        { key: 'features', label: 'Key Features (One per line)', type: 'textarea', section: 'general' },
+        { key: 'documents', label: 'Required Documents (One per line)', type: 'textarea', section: 'general' },
+        { key: 'eligibility', label: 'Eligibility Criteria (One per line)', type: 'textarea', section: 'general' },
+        { key: 'recommendation_score', label: 'Recommendation Score (1-10)', type: 'number', section: 'comparison' },
+        { key: 'great_for', label: 'Great For (One per line, Max 10)', type: 'textarea', section: 'comparison' },
+        { key: 'fee_details', label: 'Full Fees details or page link (Dropdown will link/mention this)', type: 'textarea', section: 'comparison' },
+        { key: 'bonus_offers', label: 'Bonus / Offers', type: 'textarea', section: 'comparison' },
+        { key: 'rewards_program', label: 'Rewards Program', type: 'textarea', section: 'comparison' },
+        { key: 'emi_facilities', label: 'EMI Facilities', type: 'textarea', section: 'comparison' },
+        { key: 'advantages', label: 'Advantages (One per line)', type: 'textarea', section: 'comparison' },
+        { key: 'disadvantages', label: 'Disadvantages (One per line)', type: 'textarea', section: 'comparison' },
     ],
     loans: [
         { key: 'category', label: 'Category (Personal Loan, Home Loan, Auto Loan, Business Loan)', type: 'text' },
@@ -70,7 +78,8 @@ export default function DashboardHub() {
     const [activeTab, setActiveTab] = useState<TabType>('credit_cards');
     const [data, setData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    
+    const [searchQuery, setSearchQuery] = useState('');
+
     // Editor State
     const [editingItem, setEditingItem] = useState<any>(null);
     const [isSaving, setIsSaving] = useState(false);
@@ -90,7 +99,7 @@ export default function DashboardHub() {
 
     const handleDelete = async (id: number) => {
         if (!confirm('Are you sure you want to delete this specific product?')) return;
-        
+
         setIsLoading(true);
         await supabase.from(activeTab).delete().eq('id', id);
         fetchData(activeTab);
@@ -100,7 +109,7 @@ export default function DashboardHub() {
         try {
             if (!event.target.files || event.target.files.length === 0) return;
             const file = event.target.files[0];
-            
+
             setUploadingImage(true);
             const fileExt = file.name.split('.').pop();
             const fileName = `${Math.random()}.${fileExt}`;
@@ -122,7 +131,7 @@ export default function DashboardHub() {
 
             // Update the form state with the new URL
             setEditingItem({ ...editingItem, image_url: publicUrl });
-            
+
         } catch (error: any) {
             alert('Error uploading image: ' + error.message);
         } finally {
@@ -152,7 +161,7 @@ export default function DashboardHub() {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
-        
+
         try {
             // Remove the id from the payload if creating new, else we update
             let payload = { ...editingItem };
@@ -166,7 +175,7 @@ export default function DashboardHub() {
                 const { error } = await supabase.from(activeTab).update(payload).eq('id', payload.id);
                 if (error) throw error;
             }
-            
+
             setEditingItem(null);
             fetchData(activeTab);
         } catch (error: any) {
@@ -190,7 +199,7 @@ export default function DashboardHub() {
                     <h2 className="text-2xl font-bold">{editingItem.id ? 'Edit' : 'Add New'} {activeTab.replace('_', ' ')}</h2>
                     <button onClick={() => setEditingItem(null)} className="text-slate-500 hover:text-slate-800 font-semibold">Cancel</button>
                 </div>
-                
+
                 <form onSubmit={handleSave} className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
                     {/* Image Upload Area */}
                     <div className="border border-dashed border-slate-300 rounded-2xl p-6 bg-slate-50">
@@ -207,28 +216,28 @@ export default function DashboardHub() {
                                 <p className="text-xs text-slate-500 mb-2">Upload a high-quality product image. The image will automatically cover the product visualization frame.</p>
                                 <label className="bg-white border border-slate-200 text-sm font-bold px-4 py-2 flex items-center justify-center gap-2 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors w-max">
                                     {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Choose Image'}
-                                    <input 
-                                        type="file" 
-                                        accept="image/png, image/jpeg" 
-                                        className="hidden" 
+                                    <input
+                                        type="file"
+                                        accept="image/png, image/jpeg"
+                                        className="hidden"
                                         disabled={uploadingImage}
-                                        onChange={handleImageUpload} 
+                                        onChange={handleImageUpload}
                                     />
                                 </label>
                             </div>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6">
-                        {schemas[activeTab].map((field) => (
+                    {(() => {
+                        const renderField = (field: any) => (
                             <div key={field.key} className={field.type === 'textarea' ? 'col-span-2' : ''}>
                                 <label className="block text-sm font-semibold text-slate-700 mb-1">{field.label}</label>
                                 {field.type === 'textarea' ? (
                                     <textarea
-                                        rows={4}
+                                        rows={3}
                                         value={getFieldValue(field.key, field.type)}
                                         onChange={(e) => handleFieldChange(field.key, e.target.value, field.type)}
-                                        className="w-full border border-slate-200 rounded-lg px-3 py-2"
+                                        className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue"
                                         placeholder="Enter each item on a new line..."
                                     />
                                 ) : field.type === 'boolean' ? (
@@ -247,12 +256,40 @@ export default function DashboardHub() {
                                         step={field.type === 'number' ? '0.1' : undefined}
                                         value={editingItem[field.key] || ''}
                                         onChange={(e) => handleFieldChange(field.key, e.target.value, field.type)}
-                                        className="w-full border border-slate-200 rounded-lg px-3 py-2"
+                                        className="w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-blue"
                                     />
                                 )}
                             </div>
-                        ))}
-                    </div>
+                        );
+
+                        if (activeTab === 'credit_cards') {
+                            return (
+                                <>
+                                    <div className="col-span-2 mt-4 pb-2 border-b border-slate-100">
+                                        <h3 className="text-lg font-bold text-slate-800">General Information</h3>
+                                        <p className="text-sm text-slate-500">Basic details, pricing, and images for this card.</p>
+                                    </div>
+                                    <div className="col-span-2 grid grid-cols-2 gap-6">
+                                        {schemas[activeTab].filter(f => f.section === 'general').map(renderField)}
+                                    </div>
+
+                                    <div className="col-span-2 mt-8 pb-2 border-b border-slate-100">
+                                        <h3 className="text-lg font-bold text-slate-800">Comparison Data</h3>
+                                        <p className="text-sm text-slate-500">Structured data used to power the side-by-side comparison feature.</p>
+                                    </div>
+                                    <div className="col-span-2 grid grid-cols-2 gap-6">
+                                        {schemas[activeTab].filter(f => f.section === 'comparison').map(renderField)}
+                                    </div>
+                                </>
+                            );
+                        }
+
+                        return (
+                            <div className="col-span-2 grid grid-cols-2 gap-6">
+                                {schemas[activeTab].map(renderField)}
+                            </div>
+                        );
+                    })()}
 
                     <div className="pt-6 border-t border-slate-100 flex justify-end gap-3">
                         <button type="button" onClick={() => setEditingItem(null)} className="px-6 py-2 rounded-lg font-semibold text-slate-600 hover:bg-slate-100">Cancel</button>
@@ -268,7 +305,7 @@ export default function DashboardHub() {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
             <h1 className="text-3xl font-extrabold text-brand-dark mb-8">Data Manager</h1>
-            
+
             {/* Nav Tabs */}
             <div className="flex space-x-2 border-b border-slate-200 mb-8 overflow-x-auto no-scrollbar">
                 {tabs.map((tab) => {
@@ -277,11 +314,10 @@ export default function DashboardHub() {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as TabType)}
-                            className={`flex items-center gap-2 px-6 py-4 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${
-                                activeTab === tab.id 
-                                ? 'border-brand-blue text-brand-blue' 
+                            className={`flex items-center gap-2 px-6 py-4 font-semibold text-sm transition-colors border-b-2 whitespace-nowrap ${activeTab === tab.id
+                                ? 'border-brand-blue text-brand-blue'
                                 : 'border-transparent text-slate-500 hover:text-slate-800'
-                            }`}
+                                }`}
                         >
                             <Icon className="w-4 h-4" /> {tab.label}
                         </button>
@@ -291,16 +327,25 @@ export default function DashboardHub() {
 
             {/* List View */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="flex items-center justify-between p-6 border-b border-slate-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between p-6 border-b border-slate-200 gap-4">
                     <h3 className="font-bold text-lg capitalize">{activeTab.replace('_', ' ')} Database</h3>
-                    <button 
-                        onClick={() => setEditingItem({})}
-                        className="bg-brand-green text-white font-bold px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-1 text-sm"
-                    >
-                        <Plus className="w-4 h-4" /> Add New
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <input
+                            type="text"
+                            placeholder="Search products..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="border border-slate-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                        />
+                        <button
+                            onClick={() => setEditingItem({})}
+                            className="bg-brand-green text-white font-bold px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors flex items-center gap-1 text-sm whitespace-nowrap"
+                        >
+                            <Plus className="w-4 h-4" /> Add New
+                        </button>
+                    </div>
                 </div>
-                
+
                 {isLoading ? (
                     <div className="p-12 pl-12 flex justify-center">
                         <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
@@ -321,7 +366,11 @@ export default function DashboardHub() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
-                                {data.map((item) => (
+                                {data.filter(item => {
+                                    if (!searchQuery) return true;
+                                    const query = searchQuery.toLowerCase();
+                                    return (item.name?.toLowerCase().includes(query) || item.bank?.toLowerCase().includes(query));
+                                }).map((item) => (
                                     <tr key={item.id} className="hover:bg-slate-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="w-16 h-10 bg-slate-100 rounded border border-slate-200 relative overflow-hidden flex items-center justify-center">

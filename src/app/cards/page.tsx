@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from 'react';
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
 import ProductFilterSidebar from "@/components/filters/ProductFilterSidebar";
@@ -8,6 +9,22 @@ import { useI18n } from '@/context/I18nContext';
 
 export default function CardsPage() {
     const { t } = useI18n();
+    const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+
+    const handleFilterChange = (category: string, option: string) => {
+        setSelectedFilters(prev => {
+            const categoryFilters = prev[category] || [];
+            if (categoryFilters.includes(option)) {
+                return { ...prev, [category]: categoryFilters.filter(o => o !== option) };
+            } else {
+                return { ...prev, [category]: [...categoryFilters, option] };
+            }
+        });
+    };
+
+    const handleClearFilters = () => {
+        setSelectedFilters({});
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans selection:bg-brand-blue selection:text-white">
@@ -25,7 +42,11 @@ export default function CardsPage() {
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* Sidebar */}
                     <aside className="w-full lg:w-1/4">
-                        <ProductFilterSidebar />
+                        <ProductFilterSidebar
+                            selectedFilters={selectedFilters}
+                            onFilterChange={handleFilterChange}
+                            onClearFilters={handleClearFilters}
+                        />
                     </aside>
 
                     {/* Main Content */}
@@ -42,7 +63,7 @@ export default function CardsPage() {
                             {/* We reuse the ProductComparisonTable's cards view here for the MVP visually */}
                             {/* In a real app we would pass filtered data as props. */}
                             <div className="mt-8">
-                                <ProductComparisonTable hideViewAll transparentBg condensed />
+                                <ProductComparisonTable hideViewAll transparentBg condensed activeFilters={selectedFilters} />
                             </div>
                         </div>
                     </main>
